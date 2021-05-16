@@ -4,7 +4,7 @@ import { Loading } from './style';
 
 const CardLoading: React.FC = () => (
     <Fragment>
-      <Loading LinearGradient={LinearGradient} />
+      <Loading LinearGradient={LinearGradient} style={{marginTop: 20}} />
       <Loading LinearGradient={LinearGradient} />
       <Loading LinearGradient={LinearGradient} />
       <Loading LinearGradient={LinearGradient} />

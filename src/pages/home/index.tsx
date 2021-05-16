@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, ActivityIndicator } from 'react-native';
+import { Dimensions, ActivityIndicator } from 'react-native';
+import {
+  RecyclerListView,
+  DataProvider,
+  LayoutProvider
+} from "recyclerlistview";
 import { useNavigation } from '@react-navigation/native';
-import { currentTheme, getListPokemon, generateUniqueKey } from '../../utils';
+import { currentTheme, getListPokemon } from '../../utils';
 import {
   ContainerPage,
   ButtonSearch,
@@ -28,6 +33,8 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [offset, setOffset] = useState(0);
   const [data, setData] = useState<InterfaceData[]>([]);
+  
+  const { width } = Dimensions.get("window");
 
   async function request() {
     if(loading) return null
@@ -40,29 +47,53 @@ const Home: React.FC = () => {
       setLoading(false)
     } catch (error) { console.log(error) }
   };
+  
+  function createNewDataProvider() {
+    return new DataProvider((r1, r2) => {
+      return r1 !== r2;
+    });
+  };
+
+  function renderComponenet(index: any, item: InterfaceData) {
+    return (
+      <CardPokemon
+        name={item.name}
+        type={item.type}
+        image={item.image}
+        onPress={() => navigation.navigate('Details', {data: item})}
+      />
+    );
+  };
+
+  const layoutMaker = new LayoutProvider(
+    index => {
+        return 0;
+    },
+    (type, dim) => {
+      dim.width = width-40
+      dim.height = width+20
+    }
+  );
 
   return (
     <ContainerPage
       paddingT={20}
     >
       <ButtonSearch onPress={() => navigation.navigate('Search')} />
-      <FlatList
-        data={data}
-        keyExtractor={item => generateUniqueKey(item.id)}
-        renderItem={(({item}) => (
-          <CardPokemon
-            name={item.name}
-            type={item.type}
-            image={item.image}
-            onPress={() => navigation.navigate('Details', {data: item})}
+      
+      {
+        data.length > 0 ? (
+          <RecyclerListView
+            dataProvider={createNewDataProvider().cloneWithRows(data)}
+            rowRenderer={renderComponenet}
+            showsVerticalScrollIndicator={false}
+            layoutProvider={layoutMaker}
+            onEndReached={request}
+            contentContainerStyle={{paddingTop: 15}}
+            ListFooterComponent={<ActivityIndicator color={isDarkMode ? 'white' : '#373737'} />}
           />
-        ))}
-        ListEmptyComponent={<CardLoading />}
-        ListFooterComponent={<ActivityIndicator color={isDarkMode ? 'white' : '#373737'} />}
-        onEndReached={request}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingTop: 15}}
-      />
+        ) : <CardLoading />
+      }
     </ContainerPage> 
   );
 };
