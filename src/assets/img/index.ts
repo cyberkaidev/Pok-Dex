@@ -4,6 +4,7 @@ import IconBackWhite from './files/icon-back-white.png';
 import IconBackBlack from './files/icon-back-black.png';
 import IconSun from './files/icon-sun.png';
 import IconMoon from './files/icon-moon.png';
+import IconPokeball from './files/icon-pokeball.png';
 
 export {
   IconLoupeWhite,
@@ -11,5 +12,6 @@ export {
   IconBackWhite,
   IconBackBlack,
   IconSun,
-  IconMoon
+  IconMoon,
+  IconPokeball
 };

@@ -57,6 +57,7 @@ const Home: React.FC = () => {
   function renderComponenet(index: any, item: InterfaceData) {
     return (
       <CardPokemon
+        id={item.id}
         name={item.name}
         type={item.type}
         image={item.image}
@@ -67,7 +68,7 @@ const Home: React.FC = () => {
 
   const layoutMaker = new LayoutProvider(
     index => {
-        return 0;
+      return 0;
     },
     (type, dim) => {
       dim.width = width-40

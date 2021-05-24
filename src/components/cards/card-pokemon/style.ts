@@ -25,11 +25,11 @@ export const Image = styled.Image`
   resize-mode: contain
 `
 
-export const Background = styled.View`
-  width: ${width/2}px;
-  height: ${width/2}px;
+export const Background = styled.Image`
+  width: ${width/1.2}px;
+  height: ${width/1.2}px;
   position: absolute;
-  background-color: white;
+  transform: rotate(40deg);
   border-radius: ${width}px
 `
 
